@@ -14,7 +14,7 @@
 - 📊 Mood dashboard analytics
 - 🏷️ Auto-tagging & search
 
-**Backend Developer:** Muhammed Nihal Noushad
+**Backend Developer:** Rasheeda PV
 
 ## 🚀 Quick Start
 
