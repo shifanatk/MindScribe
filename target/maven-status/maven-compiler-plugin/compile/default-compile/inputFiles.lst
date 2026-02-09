@@ -1,3 +1,6 @@
-/workspaces/Rasheeda-PV/src/main/java/com/mindscribe/MindscribeBackendApplication.java
-/workspaces/Rasheeda-PV/src/main/java/com/mindscribe/config/SecurityConfig.java
-/workspaces/Rasheeda-PV/src/main/java/com/mindscribe/controller/DiaryController.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\config\SecurityConfig.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\controller\DiaryController.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\MindscribeBackendApplication.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\model\DiaryEntry.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\repository\DiaryEntryRepository.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\service\DiaryService.java
