@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:controller="com.mindscribe.ui.Dashboard"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="1100.0" prefHeight="700.0"
+            stylesheets="@../css/styles.css">
+
+    <top>
+        <HBox spacing="16.0" styleClass="ms-header">
+            <children>
+                <Label text="MindScribe" styleClass="ms-title"/>
+                <Label text="AI-powered journaling" styleClass="ms-subtitle"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="moodLabel" text="Mood: –" styleClass="ms-mood"/>
+            </children>
+            <padding>
+                <Insets top="16" right="24" bottom="16" left="24"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="0.0">
+            <!-- Left: Entries list -->
+            <VBox prefWidth="260.0" styleClass="ms-sidebar">
+                <children>
+                    <Label text="Your entries" styleClass="ms-section-title"/>
+                    <ListView fx:id="entriesList" VBox.vgrow="ALWAYS"/>
+                    <Button fx:id="newEntryButton"
+                            text="New entry"
+                            maxWidth="Infinity"
+                            onAction="#onNewEntry"
+                            styleClass="ms-primary-button"/>
+                </children>
+                <padding>
+                    <Insets top="16" right="16" bottom="16" left="16"/>
+                </padding>
+            </VBox>
+
+            <!-- Right: Editor -->
+            <VBox HBox.hgrow="ALWAYS" styleClass="ms-main-panel">
+                <children>
+                    <HBox spacing="12.0">
+                        <children>
+                            <TextField fx:id="titleField"
+                                       HBox.hgrow="ALWAYS"
+                                       promptText="Title for today’s entry"/>
+                            <Button fx:id="saveEntryButton"
+                                    text="Save"
+                                    onAction="#onSaveEntry"
+                                    styleClass="ms-secondary-button"/>
+                            <Button fx:id="analyzeMoodButton"
+                                    text="Analyze mood"
+                                    onAction="#onAnalyzeMood"
+                                    styleClass="ms-accent-button"/>
+                        </children>
+                    </HBox>
+                    <TextArea fx:id="contentArea"
+                              VBox.vgrow="ALWAYS"
+                              promptText="Start writing your thoughts here..."/>
+                </children>
+                <padding>
+                    <Insets top="16" right="24" bottom="24" left="8"/>
+                </padding>
+            </VBox>
+        </HBox>
+    </center>
+
+</BorderPane>
+

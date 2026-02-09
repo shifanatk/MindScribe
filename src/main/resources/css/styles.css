@@ -1,0 +1,126 @@
+/* =========
+   MindScribe – Dark Modern Theme
+   ========= */
+
+root, .root {
+    -fx-font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont;
+    -fx-background-color: #0b1220;
+}
+
+.ms-header {
+    -fx-background-color: linear-gradient(to right, #0b1220, #020617);
+    -fx-alignment: CENTER_LEFT;
+}
+
+.ms-title {
+    -fx-text-fill: #e5e7eb;
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+}
+
+.ms-subtitle {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 0 8;
+}
+
+.ms-mood {
+    -fx-text-fill: #a5b4fc;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.ms-sidebar {
+    -fx-background-color: #020617;
+    -fx-border-color: #111827;
+    -fx-border-width: 0 1 0 0;
+}
+
+.ms-main-panel {
+    -fx-background-color: #020617;
+}
+
+.ms-section-title {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 0 0 8 0;
+    -fx-text-fill: #6b7280;
+    -fx-text-transform: uppercase;
+}
+
+Label {
+    -fx-text-fill: #e5e7eb;
+}
+
+TextField, TextArea {
+    -fx-background-color: #020617, #020617;
+    -fx-text-fill: #e5e7eb;
+    -fx-prompt-text-fill: #4b5563;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #1f2937;
+    -fx-border-width: 1;
+}
+
+TextArea {
+    -fx-control-inner-background: #020617;
+}
+
+ListView {
+    -fx-background-color: #020617;
+    -fx-border-color: #111827;
+    -fx-border-radius: 8;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e5e7eb;
+    -fx-padding: 8 10 8 10;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #1d283a;
+}
+
+.list-cell:hover {
+    -fx-background-color: #111827;
+}
+
+Button {
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.ms-primary-button {
+    -fx-background-color: #4f46e5;
+    -fx-text-fill: #e5e7eb;
+}
+
+.ms-primary-button:hover {
+    -fx-background-color: #6366f1;
+}
+
+.ms-secondary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #374151;
+    -fx-border-width: 1;
+    -fx-text-fill: #e5e7eb;
+}
+
+.ms-secondary-button:hover {
+    -fx-background-color: rgba(55, 65, 81, 0.5);
+}
+
+.ms-accent-button {
+    -fx-background-color: #0f766e;
+    -fx-text-fill: #e5e7eb;
+}
+
+.ms-accent-button:hover {
+    -fx-background-color: #14b8a6;
+}
+
