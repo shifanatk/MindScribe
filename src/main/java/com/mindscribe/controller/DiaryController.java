@@ -22,16 +22,17 @@ public class DiaryController {
         return "{\"status\":\"MindScribe Diary API OK!\"}";
     }
 
-    // For now, we accept raw text and use userId = 1 and mood = "positive"
-    @PostMapping("/entry")
-    public DiaryEntry createEntry(@RequestBody String content) {
-        return diaryService.createEntry(1L, content, "positive");
-    }
-
-    @GetMapping("/entries")
-    public List<DiaryEntry> getEntries() {
-        return diaryService.getEntriesForUser(1L);
-    }
+  @PostMapping("/entry")
+public DiaryEntry createEntry(@RequestBody String content) {
+    return diaryService.createEntry(content, "neutral");
 }
+
+@GetMapping("/entries")
+public List<DiaryEntry> getEntriesForCurrentUser() {
+    return diaryService.getEntriesForCurrentUser();
+}
+
+}
+
 
 
