@@ -1,4 +1,3 @@
-
 package com.mindscribe;
 
 import org.springframework.boot.SpringApplication;
