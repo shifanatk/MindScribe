@@ -1,16 +1,16 @@
 package com.mindscribe.config;
 
+import com.mindscribe.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
@@ -19,42 +19,44 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 1) Temporary in‑memory userDetailsService (no DB)
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> new org.springframework.security.core.userdetails.User(
-                "rasheeda",
-                "{noop}secret123",
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
 
-    // 2) DaoAuthenticationProvider bean (required by authenticationManager)
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); // deprecated but fine
-        provider.setUserDetailsService(userDetailsService);
-        // No password encoder needed because we use {noop}
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
-    // 3) AuthenticationManager bean using that provider
     @Bean
     public AuthenticationManager authenticationManager(DaoAuthenticationProvider provider) {
         return new ProviderManager(List.of(provider));
     }
 
-    // 4) Security filter chain: /api/auth/** is open, everything else requires Basic Auth
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println(">>> Building SecurityFilterChain for MindScribe (TEMP in‑memory)");
+        System.out.println(">>> Building SecurityFilterChain for MindScribe (DB users)");
 
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
+                .headers(headers -> headers
+            .frameOptions(frame -> frame.disable())         // allow H2 to render in a frame
+        )
             .requestCache(requestCache -> requestCache.disable())
             .formLogin(form -> form.disable())
             .httpBasic(Customizer.withDefaults());
@@ -62,6 +64,7 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
 
 
 
