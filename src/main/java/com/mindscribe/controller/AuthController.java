@@ -1,12 +1,8 @@
 package com.mindscribe.controller;
 
-import com.mindscribe.model.User;
-import com.mindscribe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,28 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password) {
-
-        if (userRepository.findByUsername(username).isPresent()) {
-            return "{\"error\":\"Username already taken\"}";
-        }
-
-        String encoded = passwordEncoder.encode(password);
-        User user = new User(username, encoded, "ROLE_USER");
-        userRepository.save(user);
-
-        return "{\"status\":\"registered\"}";
+    public AuthController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
@@ -53,4 +31,8 @@ public class AuthController {
         }
     }
 }
+
+
+
+
 

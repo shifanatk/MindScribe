@@ -22,17 +22,17 @@ public class DiaryController {
         return "{\"status\":\"MindScribe Diary API OK!\"}";
     }
 
-  @PostMapping("/entry")
-public DiaryEntry createEntry(@RequestBody String content) {
-    return diaryService.createEntry(content, "neutral");
-}
+    // Create a diary entry: body is plain text
+    @PostMapping("/entry")
+    public DiaryEntry createEntry(@RequestBody String content) {
+        return diaryService.createEntry(content, "neutral");
+    }
 
-@GetMapping("/entries")
-public List<DiaryEntry> getEntriesForCurrentUser() {
-    return diaryService.getEntriesForCurrentUser();
+    // Get all entries for the current user
+    @GetMapping("/entries")
+    public List<DiaryEntry> getEntriesForCurrentUser() {
+        return diaryService.getEntriesForCurrentUser();
+    }
 }
-
-}
-
 
 

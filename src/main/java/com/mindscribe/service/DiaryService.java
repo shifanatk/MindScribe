@@ -1,9 +1,8 @@
 package com.mindscribe.service;
 
 import com.mindscribe.model.DiaryEntry;
-import com.mindscribe.model.User;
 import com.mindscribe.repository.DiaryEntryRepository;
-import com.mindscribe.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -13,34 +12,23 @@ import java.util.List;
 public class DiaryService {
 
     private final DiaryEntryRepository diaryEntryRepository;
-    private final UserRepository userRepository;
 
-    public DiaryService(DiaryEntryRepository diaryEntryRepository,
-                        UserRepository userRepository) {
+    public DiaryService(DiaryEntryRepository diaryEntryRepository) {
         this.diaryEntryRepository = diaryEntryRepository;
-        this.userRepository = userRepository;
     }
 
     public DiaryEntry createEntry(String content, String mood) {
-        String username = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+        // TEMP: fake user id until you wire real users
+        Long userId = 1L;
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-
-        DiaryEntry entry = new DiaryEntry(user.getId(), content, mood);
+        DiaryEntry entry = new DiaryEntry(userId, content, mood);
+        // createdAt is set in the constructor; updatedAt via @UpdateTimestamp
         return diaryEntryRepository.save(entry);
     }
 
     public List<DiaryEntry> getEntriesForCurrentUser() {
-        String username = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-
-        return diaryEntryRepository.findByUserId(user.getId());
+        Long userId = 1L; // TEMP: same fake user
+        return diaryEntryRepository.findByUserId(userId);
     }
 }
+

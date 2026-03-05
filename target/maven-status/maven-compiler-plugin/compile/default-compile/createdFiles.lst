@@ -5,7 +5,6 @@ com\mindscribe\service\CustomUserDetailsService.class
 com\mindscribe\ai\AiService.class
 com\mindscribe\ai\dto\AnalyzeRequest.class
 com\mindscribe\ai\dto\OverviewResponse.class
-com\mindscribe\config\PasswordConfig.class
 com\mindscribe\ai\dto\EmotionShare.class
 com\mindscribe\model\DiaryEntry.class
 com\mindscribe\service\DiaryService.class
