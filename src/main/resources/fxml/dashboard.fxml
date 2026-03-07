@@ -10,6 +10,7 @@
             prefWidth="1100.0" prefHeight="700.0"
             stylesheets="@../css/styles.css">
 
+    <!-- HEADER -->
     <top>
         <HBox spacing="16.0" styleClass="ms-header">
             <children>
@@ -24,52 +25,86 @@
         </HBox>
     </top>
 
+    <!-- MAIN AREA -->
     <center>
-        <HBox spacing="0.0">
-            <!-- Left: Entries list -->
+        <HBox spacing="20.0">
+
+            <!-- LEFT SIDEBAR -->
             <VBox prefWidth="260.0" styleClass="ms-sidebar">
                 <children>
-                    <Label text="Your entries" styleClass="ms-section-title"/>
+
+                    <Label text="Your entries" styleClass="ms-section-title">
+                        <padding>
+                            <Insets bottom="8"/>
+                        </padding>
+                    </Label>
+
+                    <!-- SEARCH BAR -->
+                    <TextField fx:id="searchField"
+                               promptText="Search entries..."
+                               styleClass="ms-search"/>
+
                     <ListView fx:id="entriesList" VBox.vgrow="ALWAYS"/>
+
                     <Button fx:id="newEntryButton"
                             text="New entry"
                             maxWidth="Infinity"
                             onAction="#onNewEntry"
                             styleClass="ms-primary-button"/>
+
                 </children>
+
                 <padding>
                     <Insets top="16" right="16" bottom="16" left="16"/>
                 </padding>
             </VBox>
 
-            <!-- Right: Editor -->
-            <VBox HBox.hgrow="ALWAYS" styleClass="ms-main-panel">
+
+            <!-- RIGHT EDITOR PANEL -->
+            <VBox HBox.hgrow="ALWAYS" styleClass="ms-main-panel ms-card">
+
                 <children>
+
+                    <!-- TITLE + BUTTONS -->
                     <HBox spacing="12.0">
+
                         <children>
+
                             <TextField fx:id="titleField"
                                        HBox.hgrow="ALWAYS"
+                                       prefHeight="40"
                                        promptText="Title for today’s entry"/>
+
                             <Button fx:id="saveEntryButton"
                                     text="Save"
                                     onAction="#onSaveEntry"
                                     styleClass="ms-secondary-button"/>
+
                             <Button fx:id="analyzeMoodButton"
                                     text="Analyze mood"
                                     onAction="#onAnalyzeMood"
                                     styleClass="ms-accent-button"/>
+
                         </children>
+
                     </HBox>
+
+                    <!-- TEXT EDITOR -->
                     <TextArea fx:id="contentArea"
                               VBox.vgrow="ALWAYS"
+                              wrapText="true"
+                              styleClass="ms-editor"
                               promptText="Start writing your thoughts here..."/>
+
                 </children>
+
                 <padding>
                     <Insets top="16" right="24" bottom="24" left="8"/>
                 </padding>
+
             </VBox>
+
         </HBox>
     </center>
 
 </BorderPane>
-
