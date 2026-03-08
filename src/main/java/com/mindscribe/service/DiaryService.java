@@ -1,9 +1,9 @@
 package com.mindscribe.service;
 
-import com.mindscribe.model.DiaryEntry;
-import com.mindscribe.model.User;
-import com.mindscribe.repository.DiaryEntryRepository;
-import com.mindscribe.repository.UserRepository;
+import com.mindscribe.model.h2.DiaryEntry;
+import com.mindscribe.model.mysql.User;
+import com.mindscribe.repository.h2.DiaryEntryRepository;
+import com.mindscribe.repository.mysql.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -27,7 +27,7 @@ public class DiaryService {
         this.userRepository = userRepository;
     }
 
-    private Long getCurrentUserId() {
+    private String getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName(); // e.g. "rasheeda"
 
@@ -38,14 +38,14 @@ public class DiaryService {
     }
 
     public DiaryEntry createEntry(String content, String mood) {
-        Long userId = getCurrentUserId();
+        String userId = getCurrentUserId();
 
         DiaryEntry entry = new DiaryEntry(userId, content, mood);
         return diaryEntryRepository.save(entry);
     }
 
     public List<DiaryEntry> getEntriesForCurrentUser() {
-        Long userId = getCurrentUserId();
+        String userId = getCurrentUserId();
         return diaryEntryRepository.findByUserId(userId);
     }
 }

@@ -1,4 +1,4 @@
-package com.mindscribe.model;
+package com.mindscribe.model.h2;
 
 import jakarta.persistence.*;
 
@@ -15,6 +15,13 @@ public class JournalEntry {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    /**
+     * AI-derived sentiment result (e.g. Positive, Neutral, Reflective, Crisis).
+     * Stored in H2 only and used for the Emotion Dashboard / Mood Calendar.
+     */
+    @Column(name = "sentiment_result")
+    private String sentimentResult;
 
     private LocalDateTime createdAt;
 
@@ -54,6 +61,14 @@ public class JournalEntry {
         this.content = content;
     }
 
+    public String getSentimentResult() {
+        return sentimentResult;
+    }
+
+    public void setSentimentResult(String sentimentResult) {
+        this.sentimentResult = sentimentResult;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -62,4 +77,3 @@ public class JournalEntry {
         this.createdAt = createdAt;
     }
 }
-

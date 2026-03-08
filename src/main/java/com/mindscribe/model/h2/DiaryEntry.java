@@ -1,6 +1,7 @@
-package com.mindscribe.model;
+package com.mindscribe.model.h2;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,15 +16,15 @@ public class DiaryEntry {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
-   
+
     @Column(name = "mood")
     private String mood;
 
-  @CreationTimestamp
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -34,7 +35,7 @@ public class DiaryEntry {
     public DiaryEntry() {
     }
 
-    public DiaryEntry(Long userId, String content, String mood) {
+    public DiaryEntry(String userId, String content, String mood) {
         this.userId = userId;
         this.content = content;
         this.mood = mood;
@@ -45,11 +46,11 @@ public class DiaryEntry {
         return id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

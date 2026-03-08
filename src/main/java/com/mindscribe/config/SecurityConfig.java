@@ -45,33 +45,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println(">>> Building SecurityFilterChain for MindScribe (DB users)");
-
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/diary/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
-                .headers(headers -> headers
-            .frameOptions(frame -> frame.disable())         // allow H2 to render in a frame
-        )
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
             .requestCache(requestCache -> requestCache.disable())
             .formLogin(form -> form.disable())
             .httpBasic(Customizer.withDefaults());
-                // Public auth endpoints (register/login)
-                .requestMatchers("/api/auth/**").permitAll()
-                // Allow all diary endpoints for the desktop app
-                .requestMatchers("/api/diary/**").permitAll()
-                // Everything else requires authentication (if added later)
-                .anyRequest().authenticated()
-            )
-            .httpBasic();
-
-        return http.build();
-    }
-
         return http.build();
     }
 }

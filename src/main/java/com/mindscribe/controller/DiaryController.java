@@ -1,10 +1,12 @@
 package com.mindscribe.controller;
 
 import com.mindscribe.core.DiaryService;
-import com.mindscribe.model.JournalEntry;
+import com.mindscribe.model.h2.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/diary")
@@ -17,26 +19,12 @@ public class DiaryController {
         this.diaryService = diaryService;
     }
 
+    public record NewEntryRequest(String title, String content) {}
+
     @GetMapping("/health")
     public String health() {
         return "{\"status\":\"MindScribe Diary API OK!\"}";
     }
-
-    // Create a diary entry: body is plain text
-    @PostMapping("/entry")
-    public DiaryEntry createEntry(@RequestBody String content) {
-        return diaryService.createEntry(content, "neutral");
-    }
-
-    // Get all entries for the current user
-    @GetMapping("/entries")
-    public List<DiaryEntry> getEntriesForCurrentUser() {
-        return diaryService.getEntriesForCurrentUser();
-    }
-}
-
-
-    public record NewEntryRequest(String title, String content) {}
 
     @PostMapping("/entry")
     public JournalEntry createEntry(@RequestBody NewEntryRequest request) {
@@ -46,5 +34,14 @@ public class DiaryController {
     @GetMapping("/entries")
     public List<JournalEntry> getEntries() {
         return diaryService.getAllEntries();
+    }
+
+    /**
+     * Aggregated sentiment data for the Mood Calendar / Emotion Dashboard.
+     * Returns a date -> {sentiment -> count} structure.
+     */
+    @GetMapping("/mood-calendar")
+    public Map<LocalDate, Map<String, Long>> getMoodCalendar() {
+        return diaryService.getMoodCalendar();
     }
 }

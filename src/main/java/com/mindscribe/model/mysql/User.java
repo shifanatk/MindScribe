@@ -1,23 +1,30 @@
-package com.mindscribe.model;
+package com.mindscribe.model.mysql;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "users")
+/**
+ * MongoDB Atlas-backed user document for authentication and profiles.
+ *
+ * Note: we keep the existing package name to minimise ripple changes.
+ */
+@Document(collection = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Maps to MongoDB ObjectId (e.g. "69ad5597d635dd507b5c4ce5")
 
-    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
-    private String password; // later: store encoded (hashed)
+    /**
+     * BCrypt-hashed password (e.g. $2a$10$...).
+     */
+    private String password;
 
-    @Column(nullable = false)
-    private String role; // e.g. "ROLE_USER"
+    /**
+     * Spring Security role, e.g. "ROLE_USER".
+     */
+    private String role;
 
     public User() {
     }
@@ -28,7 +35,7 @@ public class User {
         this.role = role;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -56,4 +63,3 @@ public class User {
         this.role = role;
     }
 }
-

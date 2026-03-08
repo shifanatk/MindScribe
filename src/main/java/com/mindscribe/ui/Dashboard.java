@@ -30,7 +30,8 @@ public class Dashboard {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private record EntryDto(Long id, String title, String content, String createdAt) {}
+    /** Matches API response (JournalEntry); sentiment comes from AI and is stored in H2. */
+    private record EntryDto(Long id, String title, String content, String createdAt, String sentimentResult) {}
 
     @FXML
     private Label moodLabel;
@@ -119,9 +120,13 @@ public class Dashboard {
                 .ifPresent(e -> {
                     titleField.setText(e.title());
                     contentArea.setText(e.content());
-
+                    String moodText = (e.sentimentResult() != null && !e.sentimentResult().isBlank())
+                            ? "Mood: " + e.sentimentResult()
+                            : "Mood: –";
                     if (e.createdAt() != null) {
-                        moodLabel.setText("Mood: –  |  " + e.createdAt());
+                        moodLabel.setText(moodText + "  |  " + e.createdAt());
+                    } else {
+                        moodLabel.setText(moodText);
                     }
                 });
     }
