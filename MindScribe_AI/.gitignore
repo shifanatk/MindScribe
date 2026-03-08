@@ -1,0 +1,6 @@
+results/
+my_mindscribe_model/
+venv/
+__pycache__/
+*.pt
+mindscribe_history.json
