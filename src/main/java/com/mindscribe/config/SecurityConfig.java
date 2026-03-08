@@ -50,10 +50,11 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-            )
+        .requestMatchers("/admin/fix-password").permitAll()
+        .requestMatchers("/api/auth/**", "/actuator/health").permitAll()
+        .anyRequest().authenticated()
+)
+
                 .headers(headers -> headers
             .frameOptions(frame -> frame.disable())         // allow H2 to render in a frame
         )
