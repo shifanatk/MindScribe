@@ -2,6 +2,7 @@ package com.mindscribe.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.mindscribe.util.AesEncryptDecryptConverter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,7 +19,7 @@ public class DiaryEntry {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
-   // @Convert(converter = AesEncryptDecryptConverter.class)
+    @Convert(converter = AesEncryptDecryptConverter.class)
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
     
