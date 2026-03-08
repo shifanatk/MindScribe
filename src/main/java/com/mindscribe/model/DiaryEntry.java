@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.mindscribe.util.AesEncryptDecryptConverter;
+//import com.mindscribe.util.AesEncryptDecryptConverter;
 
 @Entity
 @Table(name = "diary_entries")
@@ -18,8 +18,7 @@ public class DiaryEntry {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
-    
-    @Convert(converter = AesEncryptDecryptConverter.class)
+   // @Convert(converter = AesEncryptDecryptConverter.class)
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
     
