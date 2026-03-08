@@ -60,6 +60,18 @@
         <optional>true</optional>
     </dependency>
 
+    <!-- JavaFX for desktop GUI -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>17.0.10</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>17.0.10</version>
+    </dependency>
+
     <!-- Testing -->
     <dependency>
         <groupId>org.springframework.boot</groupId>

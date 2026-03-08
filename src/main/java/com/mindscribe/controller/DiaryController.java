@@ -1,7 +1,7 @@
 package com.mindscribe.controller;
 
-import com.mindscribe.model.DiaryEntry;
-import com.mindscribe.service.DiaryService;
+import com.mindscribe.core.DiaryService;
+import com.mindscribe.model.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,17 +22,15 @@ public class DiaryController {
         return "{\"status\":\"MindScribe Diary API OK!\"}";
     }
 
-  @PostMapping("/entry")
-public DiaryEntry createEntry(@RequestBody String content) {
-    return diaryService.createEntry(content, "neutral");
+    public record NewEntryRequest(String title, String content) {}
+
+    @PostMapping("/entry")
+    public JournalEntry createEntry(@RequestBody NewEntryRequest request) {
+        return diaryService.createEntry(request.title(), request.content());
+    }
+
+    @GetMapping("/entries")
+    public List<JournalEntry> getEntries() {
+        return diaryService.getAllEntries();
+    }
 }
-
-@GetMapping("/entries")
-public List<DiaryEntry> getEntriesForCurrentUser() {
-    return diaryService.getEntriesForCurrentUser();
-}
-
-}
-
-
-

@@ -5,11 +5,16 @@ import com.mindscribe.model.User;
 import com.mindscribe.repository.DiaryEntryRepository;
 import com.mindscribe.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+/**
+ * Legacy user-specific diary service.
+ * 
+ * Currently not exposed via any controller; we keep it as plain class
+ * (no @Service) to avoid clashing with the core DiaryService that the
+ * JavaFX UI uses.
+ */
 public class DiaryService {
 
     private final DiaryEntryRepository diaryEntryRepository;

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.mindscribe.ui.LoginController;
 
 /**
  * JavaFX entry point for the MindScribe desktop GUI.
@@ -17,19 +18,23 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/dashboard.fxml")
+                getClass().getResource("/fxml/login.fxml")
         );
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 1100, 700);
+        Scene scene = new Scene(root, 420, 260);
         scene.getStylesheets().add(
                 getClass().getResource("/css/styles.css").toExternalForm()
         );
 
-        primaryStage.setTitle("MindScribe – AI Diary");
+        primaryStage.setTitle("MindScribe – Login");
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(600);
+        primaryStage.setResizable(false);
+
+        // Pass the stage to the login controller so it can open the dashboard on success
+        LoginController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
+
         primaryStage.show();
     }
 
