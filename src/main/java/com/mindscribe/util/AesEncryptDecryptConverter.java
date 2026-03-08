@@ -10,10 +10,9 @@ import java.util.Base64;
 @Converter
 public class AesEncryptDecryptConverter implements AttributeConverter<String, String> {
 
-    // 16/24/32 bytes key for AES-128/192/256 – replace with a strong secret
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
-    private static final byte[] KEY = "MindScribeSecretK".getBytes(); // 16 bytes
+    private static final byte[] KEY = "MindScribeSecret!".getBytes(); // 16 bytes
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
@@ -41,4 +40,3 @@ public class AesEncryptDecryptConverter implements AttributeConverter<String, St
         }
     }
 }
-
