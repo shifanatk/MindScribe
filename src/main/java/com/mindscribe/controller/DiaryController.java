@@ -22,6 +22,20 @@ public class DiaryController {
         return "{\"status\":\"MindScribe Diary API OK!\"}";
     }
 
+    // Create a diary entry: body is plain text
+    @PostMapping("/entry")
+    public DiaryEntry createEntry(@RequestBody String content) {
+        return diaryService.createEntry(content, "neutral");
+    }
+
+    // Get all entries for the current user
+    @GetMapping("/entries")
+    public List<DiaryEntry> getEntriesForCurrentUser() {
+        return diaryService.getEntriesForCurrentUser();
+    }
+}
+
+
     public record NewEntryRequest(String title, String content) {}
 
     @PostMapping("/entry")

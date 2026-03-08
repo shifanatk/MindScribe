@@ -3,6 +3,9 @@ package com.mindscribe.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Table(name = "diary_entries")
 public class DiaryEntry {
@@ -16,12 +19,17 @@ public class DiaryEntry {
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
-
+   
     @Column(name = "mood")
     private String mood;
 
-    @Column(name = "created_at", nullable = false)
+  @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     public DiaryEntry() {
     }
