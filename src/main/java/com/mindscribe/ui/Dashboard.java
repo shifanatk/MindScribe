@@ -2,63 +2,52 @@ package com.mindscribe.ui;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mindscribe.service.AIService; // Ensure this matches your AI service package
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * JavaFX controller for the main MindScribe dashboard.
- *
- * For now this is UI-only and uses mock data; later we can
- * plug it into the Spring Boot backend and AI services.
- */
+@Component
 public class Dashboard {
 
-    private static final String API_BASE = "http://localhost:8080/api/diary";
+    @Autowired
+    private AIService aiService;
 
+    @Autowired
+    private ConfigurableApplicationContext springContext;
+
+    private static final String API_BASE = "http://localhost:8080/api/diary";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private record EntryDto(Long id, String title, String content, String createdAt) {}
 
-    @FXML
-    private Label moodLabel;
-
-    @FXML
-    private TextField titleField;
-
-    @FXML
-    private TextArea contentArea;
-
-    @FXML
-    private ListView<String> entriesList;
-
-    @FXML
-    private Button newEntryButton;
-
-    @FXML
-    private Button saveEntryButton;
-
-    @FXML
-    private Button analyzeMoodButton;
+    @FXML private Label moodLabel;
+    @FXML private TextField titleField;
+    @FXML private TextArea contentArea;
+    @FXML private ListView<String> entriesList;
 
     @FXML
     private void initialize() {
         entriesList.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> loadSelectedEntry(newVal)
         );
-
         loadEntriesFromBackend();
     }
 
@@ -72,10 +61,7 @@ public class Dashboard {
 
     @FXML
     private void onSaveEntry() {
-        String title = titleField.getText().isBlank()
-                ? "Untitled entry"
-                : titleField.getText().trim();
-
+        String title = titleField.getText().isBlank() ? "Untitled entry" : titleField.getText().trim();
         String content = contentArea.getText();
         saveEntryToBackend(title, content);
     }
@@ -83,45 +69,53 @@ public class Dashboard {
     @FXML
     private void onAnalyzeMood() {
         String text = contentArea.getText();
-
         if (text == null || text.isBlank()) {
-            moodLabel.setText("Mood: (write something to analyze)");
+            moodLabel.setText("Mood: (write something first)");
             return;
         }
 
-        // Temporary heuristic; will be replaced with TinyBERT
-        String lower = text.toLowerCase();
-        String mood;
-        if (lower.contains("grateful") || lower.contains("happy") || lower.contains("excited")) {
-            mood = "Positive";
-        } else if (lower.contains("tired") || lower.contains("sad") || lower.contains("anxious")) {
-            mood = "Reflective";
-        } else {
-            mood = "Neutral";
-        }
+        moodLabel.setText("Mood: Analyzing...");
 
-        moodLabel.setText("Mood: " + mood);
+        // Run AI in a background thread so the UI doesn't freeze
+        new Thread(() -> {
+            try {
+                String emotion = aiService.predictEmotion(text);
+                Platform.runLater(() -> moodLabel.setText("Mood: " + emotion));
+            } catch (Exception e) {
+                Platform.runLater(() -> moodLabel.setText("Mood: Analysis Error"));
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    @FXML
+    private void onLogout(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+            loader.setControllerFactory(springContext::getBean);
+
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            System.err.println("Logout failed: " + e.getMessage());
+        }
     }
 
     private void loadSelectedEntry(String title) {
-        if (title == null) {
-            return;
-        }
-        // We already have full entries cached in the list view user data
-        @SuppressWarnings("unchecked")
+        if (title == null) return;
+
         List<EntryDto> entries = (List<EntryDto>) entriesList.getUserData();
-        if (entries == null) {
-            return;
-        }
+        if (entries == null) return;
+
         entries.stream()
                 .filter(e -> e.title().equals(title))
                 .findFirst()
                 .ifPresent(e -> {
                     titleField.setText(e.title());
                     contentArea.setText(e.content());
-
                     if (e.createdAt() != null) {
-                        moodLabel.setText("Mood: –  |  " + e.createdAt());
+                        moodLabel.setText("Mood: – | " + e.createdAt());
                     }
                 });
     }
@@ -150,7 +144,6 @@ public class Dashboard {
                     });
                 }
             } catch (Exception e) {
-                // In this first version we silently ignore errors (e.g., backend not running)
                 System.err.println("Failed to load entries: " + e.getMessage());
             }
         }).start();
@@ -159,7 +152,6 @@ public class Dashboard {
     private void saveEntryToBackend(String title, String content) {
         try {
             String json = objectMapper.writeValueAsString(new NewEntryPayload(title, content));
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_BASE + "/entry"))
                     .header("Content-Type", "application/json")
@@ -170,21 +162,14 @@ public class Dashboard {
                 try {
                     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                     if (response.statusCode() == 200 || response.statusCode() == 201) {
-                        EntryDto saved = objectMapper.readValue(response.body(), EntryDto.class);
-                        Platform.runLater(() -> {
-                            if (!entriesList.getItems().contains(saved.title())) {
-                                entriesList.getItems().add(0, saved.title());
-                            }
-                            // Refresh cache
-                            loadEntriesFromBackend();
-                        });
+                        loadEntriesFromBackend(); // Refresh list
                     }
                 } catch (Exception e) {
-                    System.err.println("Failed to save entry: " + e.getMessage());
+                    System.err.println("Failed to save: " + e.getMessage());
                 }
             }).start();
         } catch (Exception e) {
-            System.err.println("Failed to prepare save request: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
