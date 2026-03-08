@@ -8,6 +8,8 @@ C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\ai\dto\OverviewResponse.
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\config\SecurityConfig.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\controller\AuthController.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\controller\DiaryController.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\dto\CalendarDayDto.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\dto\DiaryEntryUpdateDto.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\MindscribeBackendApplication.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\model\DiaryEntry.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\model\User.java
@@ -15,3 +17,4 @@ C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\repository\DiaryEntryRep
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\repository\UserRepository.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\service\CustomUserDetailsService.java
 C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\service\DiaryService.java
+C:\Users\rashe\Rasheeda-PV\src\main\java\com\mindscribe\util\PasswordHashGenerator.java

@@ -6,12 +6,15 @@ com\mindscribe\ai\AiService.class
 com\mindscribe\ai\dto\AnalyzeRequest.class
 com\mindscribe\ai\dto\OverviewResponse.class
 com\mindscribe\ai\dto\EmotionShare.class
+com\mindscribe\dto\CalendarDayDto.class
 com\mindscribe\model\DiaryEntry.class
 com\mindscribe\service\DiaryService.class
 com\mindscribe\controller\AuthController.class
+com\mindscribe\util\PasswordHashGenerator.class
 com\mindscribe\MindscribeBackendApplication.class
 com\mindscribe\ai\dto\DetailedAnalysisResponse.class
 com\mindscribe\repository\UserRepository.class
 com\mindscribe\repository\DiaryEntryRepository.class
 com\mindscribe\config\SecurityConfig.class
+com\mindscribe\dto\DiaryEntryUpdateDto.class
 com\mindscribe\model\User.class
