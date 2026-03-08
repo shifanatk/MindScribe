@@ -1,0 +1,46 @@
+MindScribe/
+│
+├── .gitignore               <-- Crucial: Ignore .class, .log, and local .enc files
+├── README.md                <-- Project Title, Install Guide, & Team Members
+├── pom.xml                  <-- Dependencies (DJL, JavaFX, SQLite/JSON libs)
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── mindscribe/
+│   │   │           │
+│   │   │           ├── Main.java          <-- Entry Point (Launches the App)
+│   │   │           │
+│   │   │           ├── core/              <-- SHIFANA'S DOMAIN (The Blueprints)
+│   │   │           │   ├── AIService.java       <-- Interface [cite: 23]
+│   │   │           │   └── StorageService.java  <-- Interface [cite: 23]
+│   │   │           │
+│   │   │           ├── model/             <-- SHARED DATA (The JSON Structure)
+│   │   │           │   └── JournalEntry.java    <-- Defines ID, content, timestamp [cite: 24]
+│   │   │           │
+│   │   │           ├── ai/                <-- NIHAL'S DOMAIN (The Brain)
+│   │   │           │   └── TinyBertService.java <-- Implements AIService [cite: 4]
+│   │   │           │
+│   │   │           ├── security/          <-- RASHEEDA'S DOMAIN (The Vault)
+│   │   │           │   └── EncryptionUtil.java  <-- AES Logic [cite: 10]
+│   │   │           │
+│   │   │           └── ui/                <-- SHIBIN'S DOMAIN (The Face)
+│   │   │               ├── Dashboard.java       <-- The JavaFX Window
+│   │   │               └── ThreadHelper.java    <-- For the "Background Thread" logic 
+│   │   │
+│   │   └── resources/
+│   │       ├── ai-models/                 <-- NIHAL: Drop the .onnx file here 
+│   │       │   └── tinybert.onnx
+│   │       ├── fxml/                      <-- SHIBIN: Layout files (if using SceneBuilder)
+│   │       └── css/                       <-- SHIBIN: Styling (Dark mode)
+│   │
+│   └── test/                              <-- PROOF OF CONCEPT AREA
+│       └── java/
+│           └── com/
+│               └── mindscribe/
+│                   ├── AILoadTest.java    <-- Nihal's "Hello World" Console App [cite: 3]
+│                   └── SecurityTest.java  <-- Rasheeda's "Encrypt/Decrypt" verification [cite: 12]
+│
+└── docs/
+    └── Interface_Contracts.md   <-- SHIFANA: The shared documentation
