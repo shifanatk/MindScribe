@@ -1,4 +1,4 @@
-package com.mindscribe.util;
+/*package com.mindscribe.util;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -40,3 +40,4 @@ public class AesEncryptDecryptConverter implements AttributeConverter<String, St
         }
     }
 }
+>*/
