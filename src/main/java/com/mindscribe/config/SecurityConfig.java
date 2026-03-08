@@ -50,7 +50,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/admin/fix-password").permitAll()
+
         .requestMatchers("/api/auth/**", "/actuator/health").permitAll()
         .anyRequest().authenticated()
 )
