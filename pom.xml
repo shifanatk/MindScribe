@@ -25,6 +25,22 @@
 
     <dependencies>
 
+        <!-- HUGGING FACE -->
+
+        <dependency>
+            <groupId>ai.djl.huggingface</groupId>
+            <artifactId>tokenizers</artifactId>
+            <version>0.26.0</version>
+        </dependency>
+
+        <!-- ONNX -->
+
+        <dependency>
+            <groupId>com.microsoft.onnxruntime</groupId>
+            <artifactId>onnxruntime</artifactId>
+            <version>1.19.2</version>
+        </dependency>
+
         <!-- Spring Boot Starters -->
 
         <dependency>
