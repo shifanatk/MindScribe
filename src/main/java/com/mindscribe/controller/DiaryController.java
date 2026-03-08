@@ -6,6 +6,8 @@ import com.mindscribe.model.DiaryEntry;
 import com.mindscribe.service.DiaryService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import com.mindscribe.core.DiaryService;
+import com.mindscribe.model.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,3 +77,15 @@ public class DiaryController {
 
 
 
+    public record NewEntryRequest(String title, String content) {}
+
+    @PostMapping("/entry")
+    public JournalEntry createEntry(@RequestBody NewEntryRequest request) {
+        return diaryService.createEntry(request.title(), request.content());
+    }
+
+    @GetMapping("/entries")
+    public List<JournalEntry> getEntries() {
+        return diaryService.getAllEntries();
+    }
+}

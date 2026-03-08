@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+/**
+ * Legacy user-specific diary service.
+ * 
+ * Currently not exposed via any controller; we keep it as plain class
+ * (no @Service) to avoid clashing with the core DiaryService that the
+ * JavaFX UI uses.
+ */
 public class DiaryService {
 
     private final DiaryEntryRepository diaryEntryRepository;

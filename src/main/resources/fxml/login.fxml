@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:controller="com.mindscribe.ui.LoginController"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="420.0" prefHeight="260.0"
+            stylesheets="@../css/styles.css">
+
+    <center>
+        <VBox spacing="16.0" alignment="CENTER">
+            <padding>
+                <Insets top="24" right="32" bottom="24" left="32"/>
+            </padding>
+
+            <children>
+                <Label text="MindScribe Login" styleClass="ms-title"/>
+                <Label text="Sign in to your private diary" styleClass="ms-subtitle"/>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <TextField fx:id="usernameField"
+                                   promptText="Username"/>
+                        <PasswordField fx:id="passwordField"
+                                       promptText="Password"/>
+                    </children>
+                </VBox>
+
+                <Label fx:id="errorLabel"
+                       textFill="red"
+                       visible="false"/>
+
+                <HBox spacing="8.0" alignment="CENTER_RIGHT">
+                    <children>
+                        <Button text="Login"
+                                onAction="#onLogin"
+                                styleClass="ms-primary-button"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
+
