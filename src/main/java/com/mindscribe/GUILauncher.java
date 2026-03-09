@@ -6,12 +6,10 @@ import javafx.stage.Stage;
 import com.mindscribe.util.ViewSwitcher;
 
 /**
- * JavaFX entry point for the MindScribe desktop GUI.
- *
- * This runs the local UI. The Spring Boot backend can be started separately
- * (via {@link MindscribeBackendApplication}) if/when you want API + DB.
+ * Pure JavaFX Frontend Launcher - No Spring Boot dependencies
+ * Use this to run only the GUI frontend while backend runs separately
  */
-public class Main extends Application {
+public class GUILauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

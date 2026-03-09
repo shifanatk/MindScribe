@@ -1,7 +1,7 @@
 package com.mindscribe.ui;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mindscribe.ui.BackendDiaryService;
+import com.mindscribe.ui.BackendDiaryService.DiaryEntryUI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,28 +10,18 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * JavaFX controller for the main MindScribe dashboard.
  *
- * For now this is UI-only and uses mock data; later we can
- * plug it into the Spring Boot backend and AI services.
+ * Uses BackendDiaryService for permanent H2 storage via backend API.
  */
 public class Dashboard {
 
-    private static final String API_BASE = "http://localhost:8080/api/diary";
-
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    /** Matches API response (JournalEntry); sentiment comes from AI and is stored in H2. */
-    private record EntryDto(Long id, String title, String content, String createdAt, String sentimentResult) {}
+    private final BackendDiaryService diaryService = BackendDiaryService.getInstance();
+    private List<DiaryEntryUI> cachedEntries;
 
     @FXML
     private Label moodLabel;
@@ -78,7 +68,8 @@ public class Dashboard {
                 : titleField.getText().trim();
 
         String content = contentArea.getText();
-        saveEntryToBackend(title, content);
+        String mood = extractMoodFromContent(content);
+        saveEntryToBackend(title, content, mood);
     }
 
     @FXML
@@ -105,93 +96,75 @@ public class Dashboard {
     }
 
     private void loadSelectedEntry(String title) {
-        if (title == null) {
+        if (title == null || cachedEntries == null) {
             return;
         }
-        // We already have full entries cached in the list view user data
-        @SuppressWarnings("unchecked")
-        List<EntryDto> entries = (List<EntryDto>) entriesList.getUserData();
-        if (entries == null) {
-            return;
-        }
-        entries.stream()
-                .filter(e -> e.title().equals(title))
+        
+        cachedEntries.stream()
+                .filter(e -> e.getContent().contains(title.substring(0, Math.min(20, title.length()))) || title.equals("Untitled entry"))
                 .findFirst()
                 .ifPresent(e -> {
-                    titleField.setText(e.title());
-                    contentArea.setText(e.content());
-                    String moodText = (e.sentimentResult() != null && !e.sentimentResult().isBlank())
-                            ? "Mood: " + e.sentimentResult()
+                    titleField.setText(title);
+                    contentArea.setText(e.getContent());
+                    String moodText = (e.getMood() != null && !e.getMood().isBlank())
+                            ? "Mood: " + e.getMood()
                             : "Mood: –";
-                    if (e.createdAt() != null) {
-                        moodLabel.setText(moodText + "  |  " + e.createdAt());
-                    } else {
-                        moodLabel.setText(moodText);
-                    }
+                    moodLabel.setText(moodText + "  |  " + e.getFormattedDate());
                 });
     }
 
     private void loadEntriesFromBackend() {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE + "/entries"))
-                .GET()
-                .build();
-
         new Thread(() -> {
             try {
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() == 200) {
-                    List<EntryDto> entries = objectMapper.readValue(
-                            response.body(),
-                            new TypeReference<List<EntryDto>>() {}
-                    );
-
-                    Platform.runLater(() -> {
-                        entriesList.getItems().clear();
-                        for (EntryDto e : entries) {
-                            entriesList.getItems().add(e.title());
-                        }
-                        entriesList.setUserData(entries);
-                    });
-                }
+                List<DiaryEntryUI> entries = diaryService.getAllEntries("testuser");
+                
+                Platform.runLater(() -> {
+                    entriesList.getItems().clear();
+                    cachedEntries = entries;
+                    for (DiaryEntryUI e : entries) {
+                        String title = "Entry from " + e.getFormattedDate();
+                        entriesList.getItems().add(title);
+                    }
+                    System.out.println("Loaded " + entries.size() + " entries from permanent H2 storage");
+                });
             } catch (Exception e) {
-                // In this first version we silently ignore errors (e.g., backend not running)
-                System.err.println("Failed to load entries: " + e.getMessage());
+                System.err.println("Failed to load entries from backend: " + e.getMessage());
+                Platform.runLater(() -> {
+                    entriesList.getItems().clear();
+                    entriesList.getItems().add("(No backend connection)");
+                });
             }
         }).start();
     }
 
-    private void saveEntryToBackend(String title, String content) {
-        try {
-            String json = objectMapper.writeValueAsString(new NewEntryPayload(title, content));
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_BASE + "/entry"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-
-            new Thread(() -> {
-                try {
-                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                    if (response.statusCode() == 200 || response.statusCode() == 201) {
-                        EntryDto saved = objectMapper.readValue(response.body(), EntryDto.class);
-                        Platform.runLater(() -> {
-                            if (!entriesList.getItems().contains(saved.title())) {
-                                entriesList.getItems().add(0, saved.title());
-                            }
-                            // Refresh cache
-                            loadEntriesFromBackend();
-                        });
-                    }
-                } catch (Exception e) {
-                    System.err.println("Failed to save entry: " + e.getMessage());
-                }
-            }).start();
-        } catch (Exception e) {
-            System.err.println("Failed to prepare save request: " + e.getMessage());
+    private void saveEntryToBackend(String title, String content, String mood) {
+        new Thread(() -> {
+            try {
+                diaryService.saveEntry("testuser", content, mood, "AI Analysis: " + mood);
+                
+                Platform.runLater(() -> {
+                    // Refresh the entries list
+                    loadEntriesFromBackend();
+                    System.out.println("Entry saved to permanent H2 storage: " + title);
+                });
+            } catch (Exception e) {
+                System.err.println("Failed to save entry to backend: " + e.getMessage());
+            }
+        }).start();
+    }
+    
+    private String extractMoodFromContent(String content) {
+        if (content == null || content.isBlank()) {
+            return "Neutral";
+        }
+        
+        String lower = content.toLowerCase();
+        if (lower.contains("grateful") || lower.contains("happy") || lower.contains("excited")) {
+            return "Positive";
+        } else if (lower.contains("tired") || lower.contains("sad") || lower.contains("anxious")) {
+            return "Reflective";
+        } else {
+            return "Neutral";
         }
     }
-
-    private record NewEntryPayload(String title, String content) {}
 }

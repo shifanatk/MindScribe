@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mindscribe.ui.EmergencyContactViewController" spacing="20" styleClass="container">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <!-- Header -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Back" fx:id="btnBack" styleClass="btn-secondary" onAction="#handleBackToDashboard"/>
+        <Label text="Emergency Contacts" styleClass="title"/>
+    </HBox>
+    
+    <!-- Instructions -->
+    <VBox spacing="10" styleClass="card">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+        <Label text="🚨 Emergency Contact Setup" styleClass="subtitle"/>
+        <Label text="Configure trusted contacts who will be notified if the system detects concerning content in your journal entries." wrapText="true" styleClass="body-text"/>
+        <Label text="These contacts will only be contacted in crisis situations. Your privacy is important to us." wrapText="true" styleClass="body-text-secondary"/>
+    </VBox>
+    
+    <!-- Contact Form -->
+    <VBox spacing="15" styleClass="card">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+        <Label text="Add Emergency Contact" styleClass="subtitle"/>
+        
+        <GridPane hgap="15" vgap="10">
+            <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtName" promptText="Contact name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            
+            <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtEmail" promptText="contact@example.com" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            
+            <Label text="Phone:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtPhone" promptText="+1 (555) 123-4567" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            
+            <Label text="Relationship:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboRelationship" promptText="Select relationship" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            
+            <CheckBox text="Set as primary contact" fx:id="chkPrimary" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+        </GridPane>
+        
+        <HBox spacing="10">
+            <Button text="Add Contact" fx:id="btnAddContact" styleClass="btn-primary"/>
+            <Button text="Clear Form" fx:id="btnClearForm" styleClass="btn-secondary"/>
+        </HBox>
+    </VBox>
+    
+    <!-- Contacts List -->
+    <VBox spacing="15" styleClass="card">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+        <Label text="Current Emergency Contacts" styleClass="subtitle"/>
+        
+        <TableView fx:id="contactsTable" prefHeight="200">
+            <columns>
+                <TableColumn fx:id="nameColumn" text="Name" prefWidth="150"/>
+                <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
+                <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="150"/>
+                <TableColumn fx:id="relationshipColumn" text="Relationship" prefWidth="120"/>
+                <TableColumn fx:id="primaryColumn" text="Primary" prefWidth="80"/>
+                <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="100"/>
+            </columns>
+        </TableView>
+        
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Total Contacts:" fx:id="lblTotalContacts"/>
+            <Label text="Primary Contact:" fx:id="lblPrimaryContact"/>
+        </HBox>
+    </VBox>
+    
+    <!-- Test Notification -->
+    <VBox spacing="10" styleClass="card">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+        <Label text="Test Emergency Notification" styleClass="subtitle"/>
+        <Label text="Send a test notification to verify your emergency contact setup." wrapText="true" styleClass="body-text"/>
+        <Button text="Send Test Notification" fx:id="btnTestNotification" styleClass="btn-warning"/>
+    </VBox>
+    
+    <!-- Status -->
+    <Label fx:id="lblStatus" wrapText="true" styleClass="status-label"/>
+    
+</VBox>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="900.0" spacing="20.0" 
+      styleClass="editor-container" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mindscribe.ui.EditorViewController">
+   <children>
+      <!-- Header -->
+      <HBox alignment="CENTER_LEFT" spacing="20.0" prefWidth="850.0">
+         <children>
+            <Button fx:id="btnBack" text="← Back to Dashboard" 
+                    styleClass="back-button" onAction="#handleBackToDashboard" />
+            <Label text="Write Your Journal Entry" styleClass="editor-title">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      
+      <!-- Date and Mood Section -->
+      <HBox alignment="CENTER_LEFT" spacing="15.0" prefWidth="850.0">
+         <children>
+            <Label fx:id="lblDate" text="Today, March 9, 2026" styleClass="date-label">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="How are you feeling?" styleClass="mood-prompt">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnHappy" text="😊 Happy" styleClass="mood-button" onAction="#handleMoodHappy" />
+            <Button fx:id="btnSad" text="😢 Sad" styleClass="mood-button" onAction="#handleMoodSad" />
+            <Button fx:id="btnAnxious" text="😰 Anxious" styleClass="mood-button" onAction="#handleMoodAnxious" />
+            <Button fx:id="btnNeutral" text="😐 Neutral" styleClass="mood-button" onAction="#handleMoodNeutral" />
+         </children>
+      </HBox>
+      
+      <!-- Main Text Area -->
+      <VBox alignment="CENTER" spacing="10.0" styleClass="text-area-container" prefWidth="850.0" prefHeight="450.0">
+         <children>
+            <Label text="What's on your mind today?" styleClass="text-prompt">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="txtJournalEntry" 
+                      promptText="Start writing your thoughts here..." 
+                      styleClass="journal-text-area" 
+                      prefWidth="830.0" prefHeight="400.0" 
+                      wrapText="true" />
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+      
+      <!-- Action Buttons -->
+      <HBox alignment="CENTER_RIGHT" spacing="15.0" prefWidth="850.0">
+         <children>
+            <Label fx:id="lblStatus" text="" styleClass="status-label" />
+            <Button fx:id="btnAnalyze" text="🧠 Analyze" 
+                    styleClass="analyze-button" prefWidth="120.0" prefHeight="40.0" 
+                    onAction="#handleAnalyze" />
+            <Button fx:id="btnSave" text="💾 Save Entry" 
+                    styleClass="save-button" prefWidth="150.0" prefHeight="40.0" 
+                    onAction="#handleSave" />
+         </children>
+      </HBox>
+      
+      <!-- Analysis Results (Initially Hidden) -->
+      <VBox fx:id="analysisContainer" alignment="TOP_CENTER" spacing="15.0" 
+            styleClass="analysis-container" prefWidth="850.0" prefHeight="150.0" 
+            visible="false" managed="false">
+         <children>
+            <Label text="Emotional Analysis" styleClass="analysis-title">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblAnalysisResults" text="" styleClass="analysis-text" 
+                   wrapText="true" maxWidth="810.0" />
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+</VBox>

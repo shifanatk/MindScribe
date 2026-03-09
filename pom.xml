@@ -104,6 +104,41 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <!-- Backend profile - runs Spring Boot application -->
+        <profile>
+            <id>backend</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.mindscribe.MindscribeBackendApplication</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Frontend profile - runs JavaFX GUI application -->
+        <profile>
+            <id>frontend</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <version>0.0.8</version>
+                        <configuration>
+                            <mainClass>com.mindscribe.GUILauncher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -136,9 +171,20 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-                <configuration>
-                    <mainClass>com.mindscribe.Main</mainClass>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>com.mindscribe.Main</mainClass>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>gui-launcher</id>
+                        <configuration>
+                            <mainClass>com.mindscribe.GUILauncher</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

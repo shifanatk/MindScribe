@@ -1,0 +1,48 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Start Backend",
+            "type": "shell",
+            "request": "launch",
+            "command": "mvn",
+            "args": ["-DskipTests", "spring-boot:run"],
+            "group": "backend",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true
+            }
+        },
+        {
+            "name": "Start Frontend",
+            "type": "shell",
+            "request": "launch",
+            "command": "mvn",
+            "args": ["javafx:run", "-Pfrontend"],
+            "group": "frontend",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Start Full Application",
+            "configurations": ["Start Backend", "Start Frontend"],
+            "stopAll": true,
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated"
+            }
+        }
+    ]
+}

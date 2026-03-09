@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="1000.0" spacing="25.0" 
+      styleClass="analytics-container" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mindscribe.ui.AnalyticsViewController">
+   <children>
+      <!-- Header -->
+      <HBox alignment="CENTER_LEFT" spacing="20.0" prefWidth="950.0">
+         <children>
+            <Button fx:id="btnBack" text="← Back to Dashboard" 
+                    styleClass="back-button" onAction="#handleBackToDashboard" />
+            <Label text="Mood Analytics &amp; Insights" styleClass="analytics-title">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      
+      <!-- Summary Stats -->
+      <HBox alignment="CENTER" spacing="30.0" prefWidth="950.0">
+         <children>
+            <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card">
+               <children>
+                  <Label text="Total Entries" styleClass="stat-label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalEntries" text="47" styleClass="stat-value">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card">
+               <children>
+                  <Label text="Current Streak" styleClass="stat-label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStreak" text="12 days" styleClass="stat-value">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card">
+               <children>
+                  <Label text="Dominant Mood" styleClass="stat-label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDominantMood" text="😊 Happy" styleClass="stat-value">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      
+      <!-- Charts Section -->
+      <HBox alignment="CENTER" spacing="30.0" prefWidth="950.0">
+         <children>
+            <!-- Pie Chart -->
+            <VBox alignment="TOP_CENTER" spacing="15.0" styleClass="chart-card" prefWidth="450.0" prefHeight="350.0">
+               <children>
+                  <Label text="Emotion Distribution" styleClass="chart-title">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <PieChart fx:id="emotionPieChart" prefWidth="430.0" prefHeight="280.0" 
+                            legendVisible="true" labelLineLength="10.0" />
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+            
+            <!-- Line Chart -->
+            <VBox alignment="TOP_CENTER" spacing="15.0" styleClass="chart-card" prefWidth="450.0" prefHeight="350.0">
+               <children>
+                  <Label text="Mood Trends (Last 30 Days)" styleClass="chart-title">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <LineChart fx:id="moodLineChart" prefWidth="430.0" prefHeight="280.0">
+                     <xAxis>
+                        <NumberAxis label="Days" fx:id="xAxis" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis label="Mood Score" fx:id="yAxis" lowerBound="0.0" upperBound="10.0" />
+                     </yAxis>
+                  </LineChart>
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      
+      <!-- Insights Section -->
+      <VBox alignment="TOP_CENTER" spacing="15.0" styleClass="insights-card" prefWidth="950.0" prefHeight="150.0">
+         <children>
+            <Label text="Key Insights" styleClass="insights-title">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <VBox spacing="10.0">
+               <children>
+                  <Label fx:id="lblInsight1" text="• Your mood has improved by 23% over the past month" 
+                         styleClass="insight-text" wrapText="true" maxWidth="910.0" />
+                  <Label fx:id="lblInsight2" text="• You tend to write more frequently on weekdays (avg. 4.2 entries/week)" 
+                         styleClass="insight-text" wrapText="true" maxWidth="910.0" />
+                  <Label fx:id="lblInsight3" text="• Positive emotions dominate your entries when you mention 'work' or 'achievements'" 
+                         styleClass="insight-text" wrapText="true" maxWidth="910.0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+      
+      <!-- Action Buttons -->
+      <HBox alignment="CENTER" spacing="15.0">
+         <children>
+            <Button fx:id="btnExportData" text="📊 Export Data" 
+                    styleClass="export-button" prefWidth="150.0" prefHeight="40.0" 
+                    onAction="#handleExportData" />
+            <Button fx:id="btnRefresh" text="🔄 Refresh" 
+                    styleClass="refresh-button" prefWidth="120.0" prefHeight="40.0" 
+                    onAction="#handleRefresh" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+</VBox>
