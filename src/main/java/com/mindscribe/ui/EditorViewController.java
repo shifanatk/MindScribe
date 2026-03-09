@@ -10,6 +10,8 @@ import javafx.application.Platform;
 import com.mindscribe.ui.BackendDiaryService;
 import com.mindscribe.util.ViewSwitcher;
 import com.mindscribe.service.AIService;
+import com.mindscribe.service.AnalysisResult;
+import com.mindscribe.ui.SessionManager;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -114,11 +116,11 @@ public class EditorViewController {
         Task<String> analysisTask = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                // Use real AI service
-                aiService.analyzeEmotion(text);
+                // Use real AI service and get actual result
+                AnalysisResult result = aiService.analyzeEmotion(text);
                 return "Emotional Analysis Complete:\n" +
-                       "Primary emotion detected: " + getPrimaryEmotion(text) + "\n" +
-                       "Sentiment: " + getSentiment(text) + "\n" +
+                       "Primary emotion detected: " + result.getEmotion() + "\n" +
+                       "Confidence: " + String.format("%.2f%%", result.getConfidence() * 100) + "\n" +
                        "Key themes: " + getKeyThemes(text) + "\n" +
                        "Overall mood: " + selectedMood;
             }
@@ -224,30 +226,6 @@ public class EditorViewController {
         lblStatus.setText(message);
         lblStatus.getStyleClass().removeAll("status-info", "status-success", "status-error");
         lblStatus.getStyleClass().add("status-" + type);
-    }
-    
-    // Mock analysis methods (in real app, these would use AI service)
-    private String getPrimaryEmotion(String text) {
-        if (text.toLowerCase().contains("happy") || text.toLowerCase().contains("good")) {
-            return "Joy";
-        } else if (text.toLowerCase().contains("sad") || text.toLowerCase().contains("bad")) {
-            return "Sadness";
-        } else if (text.toLowerCase().contains("anxious") || text.toLowerCase().contains("worry")) {
-            return "Anxiety";
-        }
-        return "Neutral";
-    }
-    
-    private String getSentiment(String text) {
-        // Simple mock sentiment analysis
-        if (text.toLowerCase().contains("good") || text.toLowerCase().contains("great") || 
-            text.toLowerCase().contains("happy") || text.toLowerCase().contains("love")) {
-            return "Positive";
-        } else if (text.toLowerCase().contains("bad") || text.toLowerCase().contains("sad") || 
-                   text.toLowerCase().contains("angry") || text.toLowerCase().contains("hate")) {
-            return "Negative";
-        }
-        return "Neutral";
     }
     
     private String getKeyThemes(String text) {

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class AIService {
 
-    public void analyzeEmotion(String text) throws Exception {
+    public AnalysisResult analyzeEmotion(String text) throws Exception {
         String modelPath = "src/main/resources/model/model.onnx";
         String tokenizerPath = "src/main/resources/model/tokenizer.json";
 
@@ -60,12 +60,26 @@ public class AIService {
                     }
                 }
 
+                // Map emotion index to emotion name
+                String emotionName = getEmotionName(bestClass);
+
                 System.out.println("\n--- FINAL AI ANALYSIS ---");
                 System.out.println("Input: \"" + text + "\"");
                 System.out.printf("Highest Emotion (Index %d): %.2f%%\n", bestClass, probabilities[bestClass] * 100);
                 System.out.println("--------------------------\n");
+
+                // Return analysis result
+                return new AnalysisResult(emotionName, probabilities[bestClass], text);
             }
         }
+    }
+
+    private String getEmotionName(int index) {
+        String[] emotions = {"sadness", "joy", "love", "anger", "fear", "surprise"};
+        if (index >= 0 && index < emotions.length) {
+            return emotions[index];
+        }
+        return "neutral";
     }
 
     private float[] softmax(float[] logits) {
