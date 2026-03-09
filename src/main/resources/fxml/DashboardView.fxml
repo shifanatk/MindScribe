@@ -9,7 +9,8 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="900.0" spacing="30.0" 
       styleClass="dashboard-container" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.mindscribe.ui.DashboardViewController">
+      fx:controller="com.mindscribe.ui.DashboardViewController"
+      stylesheets="@../css/main.css">
    <children>
       <!-- Header -->
       <VBox alignment="CENTER" spacing="10.0">

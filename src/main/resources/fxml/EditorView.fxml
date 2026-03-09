@@ -10,7 +10,8 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="900.0" spacing="20.0" 
       styleClass="editor-container" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.mindscribe.ui.EditorViewController">
+      fx:controller="com.mindscribe.ui.EditorViewController"
+      stylesheets="@../css/main.css">
    <children>
       <!-- Header -->
       <HBox alignment="CENTER_LEFT" spacing="20.0" prefWidth="850.0">

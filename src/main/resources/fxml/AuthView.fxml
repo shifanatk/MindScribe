@@ -11,7 +11,8 @@
 
 <VBox alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="20.0" 
       styleClass="auth-container" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.mindscribe.ui.AuthViewController">
+      fx:controller="com.mindscribe.ui.AuthViewController"
+      stylesheets="@../css/main.css">
    <children>
       <Label text="MindScribe" styleClass="app-title">
          <font>
@@ -35,8 +36,8 @@
                </children>
             </VBox>
             
-            <!-- Register Section -->
-            <VBox alignment="CENTER" spacing="15.0" styleClass="auth-card">
+            <!-- Register Section - HIDDEN -->
+            <VBox alignment="CENTER" spacing="15.0" styleClass="auth-card" visible="false" managed="false">
                <children>
                   <Label text="Register" styleClass="card-title">
                      <font>

@@ -1,11 +1,60 @@
-/* MindScribe - Dark Modern Theme with Purple Accents */
+/* MindScribe - Enhanced Dark Modern Theme with Purple Accents */
 
 /* Global Styles */
 .root {
-    -fx-background-color: #1a1a2e;
+    -fx-background-color: #0f0f23;
     -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
     -fx-font-size: 14px;
-    -fx-text-fill: #e0e0e0;
+    -fx-text-fill: #f0f0f0;
+}
+
+/* Ensure all text is visible */
+Label {
+    -fx-text-fill: #f0f0f0;
+}
+
+TextField, TextArea {
+    -fx-background-color: #1a1a2e;
+    -fx-text-fill: #f0f0f0;
+    -fx-prompt-text-fill: #8888aa;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #6c5ce7;
+    -fx-border-width: 1;
+}
+
+TextArea {
+    -fx-control-inner-background: #1a1a2e;
+    -fx-text-fill: #f0f0f0;
+}
+
+ListView {
+    -fx-background-color: #1a1a2e;
+    -fx-border-color: #6c5ce7;
+    -fx-border-radius: 8;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #f0f0f0;
+    -fx-padding: 8 10 8 10;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #2d2d44;
+}
+
+.list-cell:hover {
+    -fx-background-color: #252538;
+}
+
+Button {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 10 20 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
 }
 
 /* Scrollbar */
