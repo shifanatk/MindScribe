@@ -23,6 +23,12 @@ public class JournalEntry {
     @Column(name = "sentiment_result")
     private String sentimentResult;
 
+    /**
+     * Username of the entry author
+     */
+    @Column(name = "username", nullable = false)
+    private String username;
+
     private LocalDateTime createdAt;
 
     public JournalEntry() {
@@ -31,6 +37,13 @@ public class JournalEntry {
     public JournalEntry(String title, String content) {
         this.title = title;
         this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public JournalEntry(String title, String content, String username) {
+        this.title = title;
+        this.content = content;
+        this.username = username;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -67,6 +80,14 @@ public class JournalEntry {
 
     public void setSentimentResult(String sentimentResult) {
         this.sentimentResult = sentimentResult;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocalDateTime getCreatedAt() {

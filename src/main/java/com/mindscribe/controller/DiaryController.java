@@ -27,13 +27,17 @@ public class DiaryController {
     }
 
     @PostMapping("/entry")
-    public JournalEntry createEntry(@RequestBody NewEntryRequest request) {
-        return diaryService.createEntry(request.title(), request.content());
+    public JournalEntry createEntry(@RequestParam String username, @RequestBody NewEntryRequest request) {
+        return diaryService.createEntry(request.title(), request.content(), username);
     }
 
     @GetMapping("/entries")
-    public List<JournalEntry> getEntries() {
-        return diaryService.getAllEntries();
+    public List<JournalEntry> getEntries(@RequestParam String username) {
+        if (username != null && !username.trim().isEmpty()) {
+            return diaryService.getAllEntries(username);
+        } else {
+            return diaryService.getAllEntries(null);
+        }
     }
 
     /**

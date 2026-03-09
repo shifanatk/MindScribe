@@ -34,9 +34,9 @@ public class DiaryService {
      * sentiment is stored in H2. If sentiment is "Crisis", triggers Java Mail alert.
      */
     @Transactional(transactionManager = "h2TransactionManager")
-    public JournalEntry createEntry(String title, String content) {
+    public JournalEntry createEntry(String title, String content, String username) {
         String sentiment = tinyBertService.analyzeSentiment(content != null ? content : "");
-        JournalEntry entry = new JournalEntry(title, content);
+        JournalEntry entry = new JournalEntry(title, content, username);
         entry.setSentimentResult(sentiment);
         JournalEntry saved = repository.save(entry);
         if (SENTIMENT_CRISIS.equals(sentiment)) {
@@ -46,8 +46,12 @@ public class DiaryService {
     }
 
     @Transactional(transactionManager = "h2TransactionManager", readOnly = true)
-    public List<JournalEntry> getAllEntries() {
-        return repository.findAll();
+    public List<JournalEntry> getAllEntries(String username) {
+        if (username != null && !username.trim().isEmpty()) {
+            return repository.findByUsername(username);
+        } else {
+            return repository.findAll();
+        }
     }
 
     /**

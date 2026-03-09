@@ -45,16 +45,17 @@ public class BackendDiaryService {
             String json = objectMapper.writeValueAsString(new NewEntryPayload(title, content));
             
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_BASE + "/entry"))
+                    .uri(URI.create(API_BASE + "/entry?username=" + username))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             
-            httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Entry saved to permanent H2 storage for user: " + username);
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Entry saved to permanent H2 storage for user: " + username + " - Status: " + response.statusCode());
             
         } catch (Exception e) {
             System.err.println("Failed to save entry to backend: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -63,12 +64,22 @@ public class BackendDiaryService {
      */
     public List<DiaryEntryUI> getAllEntries(String username) {
         try {
+            String url;
+            if (username != null && !username.trim().isEmpty()) {
+                url = API_BASE + "/entries?username=" + username;
+            } else {
+                url = API_BASE + "/entries";
+            }
+            
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_BASE + "/entries"))
+                    .uri(URI.create(url))
                     .GET()
                     .build();
             
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            System.out.println("Loading entries from: " + url + " - Status: " + response.statusCode());
+            System.out.println("Response body: " + response.body());
             
             if (response.statusCode() == 200) {
                 List<BackendEntryDto> backendEntries = objectMapper.readValue(
@@ -76,10 +87,14 @@ public class BackendDiaryService {
                         new TypeReference<List<BackendEntryDto>>() {}
                 );
                 
+                System.out.println("Successfully loaded " + backendEntries.size() + " entries from backend");
                 return convertToUIEntries(backendEntries);
+            } else {
+                System.err.println("Failed to load entries - HTTP status: " + response.statusCode());
             }
         } catch (Exception e) {
             System.err.println("Failed to load entries from backend: " + e.getMessage());
+            e.printStackTrace();
         }
         
         return new ArrayList<>();
@@ -149,7 +164,7 @@ public class BackendDiaryService {
     
     // Records for backend communication
     private record NewEntryPayload(String title, String content) {}
-    private record BackendEntryDto(Long id, String title, String content, String createdAt, String sentimentResult) {}
+    private record BackendEntryDto(Long id, String title, String content, String createdAt, String sentimentResult, String username) {}
     
     /**
      * UI-compatible diary entry class that matches the old interface

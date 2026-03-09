@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import com.mindscribe.ui.SessionManager;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -116,7 +117,7 @@ public class Dashboard {
     private void loadEntriesFromBackend() {
         new Thread(() -> {
             try {
-                List<DiaryEntryUI> entries = diaryService.getAllEntries("testuser");
+                List<DiaryEntryUI> entries = diaryService.getAllEntries(SessionManager.getCurrentUser());
                 
                 Platform.runLater(() -> {
                     entriesList.getItems().clear();
@@ -140,7 +141,7 @@ public class Dashboard {
     private void saveEntryToBackend(String title, String content, String mood) {
         new Thread(() -> {
             try {
-                diaryService.saveEntry("testuser", content, mood, "AI Analysis: " + mood);
+                diaryService.saveEntry(SessionManager.getCurrentUser(), content, mood, "AI Analysis: " + mood);
                 
                 Platform.runLater(() -> {
                     // Refresh the entries list
